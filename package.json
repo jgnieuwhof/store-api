@@ -33,6 +33,7 @@
     "eslint-config-minimal": "^0.4.2",
     "eslint-plugin-import": "^2.2.0",
     "lodash": "^4.17.3",
+    "node-fetch": "^1.6.3",
     "nodemon": "^1.11.0",
     "updeep": "^1.0.0",
     "winston": "^2.3.1"
