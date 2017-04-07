@@ -45,19 +45,20 @@ export const addToNewsletter = ({ email }) => {
   })
 }
 
-export let sendHtmlEmail = async ({ email, subject, html }) => {
+export let sendHtmlEmail = async ({ email, subject, html, files }) => {
   let body = {
     to: { [email]: email },
-    from: [ `hello@phrase.fm`, `Phrase.fm` ],
+    from: [ `hello@rambleonsilver.co`, `rambleonsilver.co` ],
     subject,
     html,
   }
   if (files && files.length) {
     body.attachment = files
   }
-  return sendInBlueApiRequest({
+  let { success, message } = await sendInBlueApiRequest({
     endpoint: `email`,
     method: `POST`,
     body,
   })
+  return { success, message }
 }
