@@ -1,6 +1,7 @@
 
 import logger from '../../helpers/logger'
 import { contact } from '../../helpers/email'
+import { addToNewsletter, createEmailContact } from '../../helpers/sendInBlue'
 
 const reasons = {
   generalInquiry: `General Inquiry`,
@@ -22,7 +23,14 @@ export default ({ api }) => {
       }
       let { success, message } = await contact({ ...req.body, sendToEmail })
       if (joinNewsletter) {
-        console.log(`join newsletter here!`)
+        let response = await createEmailContact({ email, first, last })
+        if (!response.success)
+          return res.json({
+            success: false,
+            message: `Error joining mailing list, please try again later`,
+          })
+        setTimeout(() => { addToNewsletter({ email }) }, 30000)
+        return res.json({ success: true })
       }
       res.json({ success, message })
     }

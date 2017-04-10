@@ -2,6 +2,7 @@
 import fetch from 'node-fetch'
 
 import { sendInBlueApi, sendInBlueKey } from '../config'
+import logger from './logger'
 
 export let sendInBlueApiRequest = async ({ endpoint, method, body }) => {
   if (process.env.NODE_ENV === `test`) {
@@ -25,24 +26,39 @@ export let sendInBlueApiRequest = async ({ endpoint, method, body }) => {
   return { ...json, success: true }
 }
 
-export let createEmailContact = ({ email }) => {
-  return sendInBlueApiRequest({
+export let createEmailContact = async ({ email, first, last }) => {
+  let body = {
+    email,
+    attributes: {
+      FIRSTNAME: first,
+      LASTNAME: last,
+    },
+  }
+  let response = await sendInBlueApiRequest({
     endpoint: `/user/createdituser`,
     method: `POST`,
-    body: {
-      email,
-    },
+    body,
   })
+  if (!response.success)
+    logger.error(`Error creating a user: `, response)
+  else
+    logger.info(`Added user ${email}, ${first}, ${last}`)
+  return response
 }
 
-export const addToNewsletter = ({ email }) => {
-  return sendInBlueApiRequest({
+export const addToNewsletter = async ({ email }) => {
+  let response = await sendInBlueApiRequest({
     endpoint: `list/4/users`,
     method: `POST`,
     body: {
       users: [ email ],
     },
   })
+  if (!response.success)
+    logger.error(`Error adding to newsletter: `, response)
+  else
+    logger.info(`Added user ${email} to newsletter`)
+  return response
 }
 
 export let sendHtmlEmail = async ({ email, subject, html, files }) => {
@@ -60,5 +76,9 @@ export let sendHtmlEmail = async ({ email, subject, html, files }) => {
     method: `POST`,
     body,
   })
+  if (!success)
+    logger.error(`Error sending email: `, message)
+  else
+    logger.info(`Email sent! ${email}, ${subject}`)
   return { success, message }
 }
