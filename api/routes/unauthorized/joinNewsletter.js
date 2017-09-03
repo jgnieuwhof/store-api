@@ -1,6 +1,6 @@
 
 import logger from '../../helpers/logger'
-import { addToNewsletter, createEmailContact } from '../../helpers/sendInBlue'
+import { addToNewsletter } from '../../helpers/sendInBlue'
 
 export default ({ api }) => {
   api.post(`/joinNewsletter`, async (req, res) => {
@@ -11,19 +11,11 @@ export default ({ api }) => {
         res.json({ success: false, message: `Please provide an email address` })
       }
       else {
-        let response = await createEmailContact({ email })
-        if (!response.success) {
-          res.json({ success: false, message: `Invalid email address`})
-        }
-        else {
-          response = await addToNewsletter({ email })
-          if (!response.success) {
-            res.json({ success: false, message: `An error occurred, please try again later` })
-          }
-          else {
-            res.json({ success: true })
-          }
-        }
+        let response = await addToNewsletter({ email })
+        if (!response.success)
+          res.json({ success: false, message: `An error occurred, please try again later` })
+        else
+          res.json({ success: true })
       }
     }
     catch(e) {

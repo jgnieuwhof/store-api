@@ -47,7 +47,9 @@ export let createEmailContact = async ({ email, first, last }) => {
 }
 
 export const addToNewsletter = async ({ email }) => {
-  let response = await sendInBlueApiRequest({
+  let response = await createEmailContact({ email })
+  if (!response.success) return response
+  response = await sendInBlueApiRequest({
     endpoint: `list/4/users`,
     method: `POST`,
     body: {
