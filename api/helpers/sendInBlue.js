@@ -1,7 +1,7 @@
 
 import fetch from 'node-fetch'
 
-import { sendInBlueApi, sendInBlueKey } from '../config'
+import { fromEmails, sendInBlueApi, sendInBlueKey } from '../config'
 import logger from './logger'
 
 export let sendInBlueApiRequest = async ({ endpoint, method, body }) => {
@@ -66,7 +66,7 @@ export const addToNewsletter = async ({ email }) => {
 export let sendHtmlEmail = async ({ email, subject, html, files }) => {
   let body = {
     to: { [email]: email },
-    from: [ `hello@rambleonsilver.co`, `rambleonsilver.co` ],
+    from: fromEmails,
     subject,
     html,
   }

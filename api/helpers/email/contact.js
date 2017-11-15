@@ -18,20 +18,19 @@ const customOrderRequestHtml = ({ types, description }) => {
   `)
 }
 
-const shippingInquiryHtml = ({ trackingNumber, inquiry }) => {
-  if (!trackingNumber || !inquiry)
-    return ``
-  return (`
+const shippingInquiryHtml = ({ trackingNumber, inquiry }) => (
+  (!trackingNumber || !inquiry) ? `` :
+  `
     ${trackingNumber ? `<p>Tracking Number: ${trackingNumber}</p>` : ``}
     ${inquiry ? `<p>Inquiry: ${inquiry}</p>` : ``}
-  `)
-}
+  `
+)
 
 const html = ({
   first, last, email, note, reason,
   types, description, // custom order request
   trackingNumber, inquiry, // shipping inquiry
-  joinNewsletter,
+  joinNewsletter, files,
 }) => (`
   <html>
     <body>
@@ -44,6 +43,11 @@ const html = ({
       <div>${shippingInquiryHtml({ trackingNumber, inquiry })}</div>
       ${note ? `<p>Note: ${note}</p>`: ``}
       <p>Joined Newsletter? <strong>${joinNewsletter}</strong></p>
+      ${(files && files[0]) ?
+        `<p>Similar photo:</p>
+         <p><img src="${files[0]}" style="max-height: 200px" /></p>
+        ` : ``
+      }
     </body>
   </html>
 `)

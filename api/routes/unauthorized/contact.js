@@ -1,4 +1,5 @@
 
+import { sendToEmail } from '../../config'
 import logger from '../../helpers/logger'
 import { contact } from '../../helpers/email'
 import { addToNewsletter, createEmailContact } from '../../helpers/sendInBlue'
@@ -13,15 +14,15 @@ export default ({ api }) => {
   api.post(`/contact`, async (req, res) => {
     logger.info(`in /contact`)
     try {
-      let sendToEmail = `jgnieuwhof@gmail.com`
-      let { first, last, reason, email, joinNewsletter, description } = req.body
+      let { body } = req
+      let { first, last, reason, email, joinNewsletter, description, similarPhotoUrl } = body
       if (!first || !last || !email) {
         return res.json({ success: false, message: `Missing required fields` })
       }
       if (reason === reasons.customOrderRequest && !description) {
         return res.json({ success: false, message: `Missing custom order request fields` })
       }
-      let { success, message } = await contact({ ...req.body, sendToEmail })
+      let { success, message } = await contact({ ...body, files: [similarPhotoUrl], sendToEmail })
       res.json({ success, message })
 
       createEmailContact({ email, first, last })

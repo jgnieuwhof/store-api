@@ -1,12 +1,12 @@
 /* global process, require */
 
 import bodyParser from 'body-parser'
-import express from 'express'
 import cors from 'cors'
 import chalk from 'chalk'
+import express from 'express'
+import { Server } from 'http'
 
 import { secret } from './config'
-import { Server } from 'http'
 import router from './router'
 
 async function bootstrap () {
