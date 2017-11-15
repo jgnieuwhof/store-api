@@ -43,11 +43,7 @@ const html = ({
       <div>${shippingInquiryHtml({ trackingNumber, inquiry })}</div>
       ${note ? `<p>Note: ${note}</p>`: ``}
       <p>Joined Newsletter? <strong>${joinNewsletter}</strong></p>
-      ${(files && files[0]) ?
-        `<p>Similar photo:</p>
-         <p><img src="${files[0]}" style="max-height: 200px" /></p>
-        ` : ``
-      }
+      ${(files && files[0] && `Similar photo is attached!`) || ``}
     </body>
   </html>
 `)
