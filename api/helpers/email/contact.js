@@ -1,5 +1,5 @@
 
-const customOrderRequestHtml = ({ types, description }) => {
+const customOrderRequestHtml = ({ types, ringSize, ringStyle, description }) => {
   if (!types) return ``
   let typeString = Object.keys(types)
     .map(x => (types[x] ? x : null))
@@ -8,6 +8,8 @@ const customOrderRequestHtml = ({ types, description }) => {
   if (!typeString || !description)
     return ``
   return (`
+    <p>Ring Size (US): ${ringSize}</p>
+    <p>Ring Style: ${ringStyle}</p>
     <p>Types: ${typeString}</p>
     ${description ? `
       <p>
@@ -31,6 +33,7 @@ const html = ({
   types, description, // custom order request
   trackingNumber, inquiry, // shipping inquiry
   joinNewsletter, files,
+  ringSize, ringStyle,
 }) => (`
   <html>
     <body>
@@ -39,7 +42,7 @@ const html = ({
       <p>Last: ${last}</p>
       <p>Email: ${email}</p>
       <p>Reason: ${reason}</p>
-      <div>${customOrderRequestHtml({ types, description })}</div>
+      <div>${customOrderRequestHtml({ types, description, ringSize, ringStyle })}</div>
       <div>${shippingInquiryHtml({ trackingNumber, inquiry })}</div>
       ${note ? `<p>Note: ${note}</p>`: ``}
       <p>Joined Newsletter? <strong>${joinNewsletter}</strong></p>
